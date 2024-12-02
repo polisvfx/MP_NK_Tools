@@ -1,0 +1,77 @@
+#! C:/Program Files/Nuke15.0v4/nuke-15.0.4.dll -nx
+version 15.0 v4
+Gizmo {
+ addUserKnob {20 Shotdata l "Shot Settings"}
+ addUserKnob {6 length_from_input l "Input Length" +STARTLINE}
+ length_from_input true
+ addUserKnob {3 inpoint l "" t "Source first frame." -STARTLINE}
+ inpoint {{"\[value length_from_input] > 0 ? first_frame : Input1.firstframe"}}
+ addUserKnob {3 outpoint l "" -STARTLINE}
+ outpoint {{"\[value length_from_input] > 0 ? last_frame : Input1.lastframe"}}
+ addUserKnob {41 firstframe_1 l "First Frame" T Input1.firstframe}
+ addUserKnob {41 lastframe l "Last Frame" T Input1.lastframe}
+ addUserKnob {41 handles l "Included Handles" T Input1.handles}
+ addUserKnob {41 addhandles l "Add Handles" T Input1.addhandles}
+ addUserKnob {41 shownmetadata l "" +STARTLINE T ViewMetaData1.shownmetadata}
+ addUserKnob {41 metadatafilter l "search metadata for" T ViewMetaData1.metadatafilter}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -29
+  addUserKnob {20 Shotdata l "Shot Settings"}
+  addUserKnob {3 firstframe l "First Frame"}
+  firstframe 1
+  addUserKnob {3 lastframe l "Last Frame" -STARTLINE}
+  lastframe 100
+  addUserKnob {3 handles l "Included Handles"}
+  addUserKnob {3 addhandles l "Add Handles"}
+ }
+ FrameRange {
+  first_frame {{parent.Input1.first_frame}}
+  last_frame {{parent.Input1.last_frame}}
+  time ""
+  name OriginalFramerange
+  xpos -29
+  ypos 56
+  disable {{!parent.length_from_input}}
+ }
+ FrameRange {
+  first_frame {{parent.Input1.firstframe}}
+  last_frame {{parent.Input1.lastframe}}
+  time ""
+  name CustomFramerange
+  xpos -29
+  ypos 101
+  disable {{parent.length_from_input}}
+ }
+ TimeOffset {
+  time_offset {{"(parent.length_from_input < 1 ? -parent.CustomFramerange.knob.first_frame+1001 : -parent.OriginalFramerange.knob.first_frame+1001)-Input1.handles"}}
+  time ""
+  name TimeOffset
+  xpos -29
+  ypos 160
+  addUserKnob {20 setup l Setup}
+  addUserKnob {3 handles l Handles}
+  handles {{parent.Input1.handles}}
+ }
+ FrameRange {
+  first_frame {{input.first_frame-Input1.addhandles}}
+  last_frame {{input.last_frame+TimeOffset.handles+Input1.addhandles}}
+  time ""
+  name TargetRange
+  xpos -29
+  ypos 223
+ }
+ ViewMetaData {
+  metadatafilter timecode
+  name ViewMetaData1
+  xpos -29
+  ypos 298
+ }
+ Output {
+  name Output1
+  xpos -29
+  ypos 361
+ }
+end_group
