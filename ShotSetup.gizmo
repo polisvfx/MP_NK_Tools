@@ -57,11 +57,11 @@ Gizmo {
  }
  FrameRange {
   first_frame {{input.first_frame-Input1.addhandles}}
-  last_frame {{input.last_frame+TimeOffset.handles+Input1.addhandles}}
+  last_frame {{input.last_frame+Input1.addhandles}}
   time ""
   name TargetRange
   xpos -29
-  ypos 223
+  ypos 222
  }
  ViewMetaData {
   metadatafilter timecode
