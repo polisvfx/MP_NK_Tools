@@ -1,6 +1,8 @@
-#! C:/Program Files/Nuke15.0v4/nuke-15.0.4.dll -nx
-version 15.0 v4
-Gizmo {
+set cut_paste_input [stack 0]
+Group {
+ name ShotSetup
+ selected true
+ ypos -100
  addUserKnob {20 Shotdata l "Shot Settings"}
  addUserKnob {6 length_from_input l "Input Length" +STARTLINE}
  length_from_input true
@@ -21,11 +23,12 @@ Gizmo {
   xpos -29
   addUserKnob {20 Shotdata l "Shot Settings"}
   addUserKnob {3 firstframe l "First Frame"}
-  firstframe 1
+  firstframe 15
   addUserKnob {3 lastframe l "Last Frame" -STARTLINE}
-  lastframe 100
+  lastframe 102
   addUserKnob {3 handles l "Included Handles"}
   addUserKnob {3 addhandles l "Add Handles"}
+  addhandles 15
  }
  FrameRange {
   first_frame {{parent.Input1.first_frame}}
@@ -37,18 +40,19 @@ Gizmo {
   disable {{!parent.length_from_input}}
  }
  FrameRange {
-  first_frame {{parent.Input1.firstframe}}
+  first_frame {{parent.Input1.firstframe+1}}
   last_frame {{parent.Input1.lastframe}}
   time ""
   name CustomFramerange
   xpos -29
-  ypos 101
+  ypos 102
   disable {{parent.length_from_input}}
  }
  TimeOffset {
   time_offset {{"(parent.length_from_input < 1 ? -parent.CustomFramerange.knob.first_frame+1001 : -parent.OriginalFramerange.knob.first_frame+1001)-Input1.handles"}}
   time ""
   name TimeOffset
+  selected true
   xpos -29
   ypos 160
   addUserKnob {20 setup l Setup}

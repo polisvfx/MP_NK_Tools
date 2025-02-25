@@ -81,11 +81,11 @@ for i in ['1', '2', '3', '4']:
 nuke.addOnCreate(addCornerPinButtons, nodeClass='CornerPin2D')
 
 # Create menu item
-menubar = nuke.menu('Nuke')
-edit_menu = menubar.findItem('Edit')
-if not edit_menu:
-    edit_menu = menubar.addMenu('Edit')
-edit_menu.addCommand('Add Reference Buttons to CornerPins', addToExistingCornerPins)
+#menubar = nuke.menu('Nuke')
+#edit_menu = menubar.findItem('Edit')
+#if not edit_menu:
+#    edit_menu = menubar.addMenu('Edit')
+#edit_menu.addCommand('Add Reference Buttons to CornerPins', addToExistingCornerPins)
 
 # Run once when Nuke starts
 # addToExistingCornerPins()
