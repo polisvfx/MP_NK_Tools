@@ -1,6 +1,7 @@
 set cut_paste_input [stack 0]
 Group {
  name ShotSetup
+ knobChanged "import nuke\ntry:\n    n = nuke.thisNode()\n    k = nuke.thisKnob()\n    if k is not None and k.name() == 'inputChange':\n        inp = n.input(0)\n        if inp is not None:\n            try:\n                md = inp.metadata() or {}\n            except Exception:\n                md = {}\n            fps_md = md.get('input/frame_rate') or md.get('input/framerate') or md.get('input/fps')\n            if fps_md:\n                try: n\['fps'].setValue(float(fps_md))\n                except Exception: pass\nexcept Exception:\n    pass"
  selected true
  ypos -100
  addUserKnob {20 Shotdata l "Shot Settings"}
