@@ -1,6 +1,7 @@
 set cut_paste_input [stack 0]
 Group {
  name ShotSetup
+ knobChanged "import nuke\ntry:\n    n = nuke.thisNode()\n    k = nuke.thisKnob()\n    if k is not None and k.name() == 'inputChange':\n        inp = n.input(0)\n        if inp is not None:\n            try:\n                md = inp.metadata() or {}\n            except Exception:\n                md = {}\n            fps_md = md.get('input/frame_rate') or md.get('input/framerate') or md.get('input/fps')\n            if fps_md:\n                try: n\['fps'].setValue(float(fps_md))\n                except Exception: pass\nexcept Exception:\n    pass"
  selected true
  ypos -100
  addUserKnob {20 Shotdata l "Shot Settings"}
@@ -16,6 +17,11 @@ Group {
  addUserKnob {41 addhandles l "Add Handles" T Input1.addhandles}
  addUserKnob {41 shownmetadata l "" +STARTLINE T ViewMetaData1.shownmetadata}
  addUserKnob {41 metadatafilter l "search metadata for" T ViewMetaData1.metadatafilter}
+ addUserKnob {26 divider_project l "<b>Project Setup</b>" +STARTLINE}
+ addUserKnob {7 fps l FPS R 1 120}
+ fps 25
+ addUserKnob {26 divider_apply l "" +STARTLINE}
+ addUserKnob {22 apply_to_project l "<b>Apply to Project</b>" T "n = nuke.thisNode()\ntr = n.node('TargetRange')\nff = int(tr\['first_frame'].value())\nlf = int(tr\['last_frame'].value())\nfps = n\['fps'].value()\n\nnuke.root()\['first_frame'].setValue(ff)\nnuke.root()\['last_frame'].setValue(lf)\nnuke.root()\['fps'].setValue(fps)\n\ninp = n.input(0)\nfmt_name = 'N/A'\nif inp:\n    fmt = inp.format()\n    w = fmt.width()\n    h = fmt.height()\n    par = fmt.pixelAspect()\n    fmt_name = 'ShotFormat_%dx%d' % (w, h)\n    nuke.addFormat('%d %d %.4f %s' % (w, h, par, fmt_name))\n    nuke.root()\['format'].setValue(fmt_name)\n\nnuke.message('Project settings applied:\\n\\nFrame Range: %d - %d\\nFPS: %g\\nFormat: %s' % (ff, lf, fps, fmt_name))" +STARTLINE}
 }
  Input {
   inputs 0
@@ -28,7 +34,6 @@ Group {
   lastframe 102
   addUserKnob {3 handles l "Included Handles"}
   addUserKnob {3 addhandles l "Add Handles"}
-  addhandles 15
  }
  FrameRange {
   first_frame {{parent.Input1.first_frame}}
